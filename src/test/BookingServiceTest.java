@@ -5,82 +5,63 @@ import bookmystay.model.Room;
 import bookmystay.model.RoomType;
 import bookmystay.repository.BookingRepository;
 import bookmystay.repository.InventoryRepository;
+import bookmystay.repository.RoomAllocationRepository;
 import bookmystay.service.BookingService;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class BookingServiceTest {
+class BookingAllocationTest {
 
     @Test
-    void testBookingQueueFIFO() {
-
-        BookingRepository bookingRepository =
-                new BookingRepository();
+    void shouldAllocateUniqueRoomIds() {
 
         InventoryRepository inventoryRepository =
                 new InventoryRepository();
 
         inventoryRepository.save(
-
                 new Room(
-
                         RoomType.SINGLE,
-
-                        5,
-
-                        1500,
-
+                        2,
+                        1800,
                         "WiFi"
-
                 )
-
         );
 
         BookingService bookingService =
                 new BookingService(
-
-                        bookingRepository,
-
-                        inventoryRepository
-
+                        new BookingRepository(),
+                        inventoryRepository,
+                        new RoomAllocationRepository()
                 );
 
         bookingService.requestBooking(
-
                 new Reservation(
-
                         "A",
-
                         RoomType.SINGLE,
-
                         1
-
                 )
-
         );
 
         bookingService.requestBooking(
-
                 new Reservation(
-
                         "B",
-
                         RoomType.SINGLE,
-
                         1
-
                 )
-
         );
 
+        bookingService.processNextBooking();
+
+        bookingService.processNextBooking();
+
         assertEquals(
-
-                2,
-
-                bookingRepository.size()
-
+                0,
+                inventoryRepository
+                        .findByRoomType(RoomType.SINGLE)
+                        .getAvailableRooms()
         );
 
     }
+
 }

@@ -1,6 +1,9 @@
+import bookmystay.model.Reservation;
 import bookmystay.model.Room;
 import bookmystay.model.RoomType;
+import bookmystay.repository.BookingRepository;
 import bookmystay.repository.InventoryRepository;
+import bookmystay.service.BookingService;
 import bookmystay.service.InventoryService;
 import bookmystay.service.SearchService;
 
@@ -8,52 +11,110 @@ public class BookMyStayApplication {
 
     public static void main(String[] args) {
 
-        InventoryRepository repository =
+        InventoryRepository inventoryRepository =
                 new InventoryRepository();
 
+        BookingRepository bookingRepository =
+                new BookingRepository();
+
         InventoryService inventoryService =
-                new InventoryService(repository);
+                new InventoryService(inventoryRepository);
 
         SearchService searchService =
-                new SearchService(repository);
+                new SearchService(inventoryRepository);
+
+        BookingService bookingService =
+                new BookingService(
+
+                        bookingRepository,
+
+                        inventoryRepository
+
+                );
 
         inventoryService.addRoom(
+
                 new Room(
+
                         RoomType.SINGLE,
-                        20,
+
+                        2,
+
                         1800,
-                        "WiFi, AC"
+
+                        "WiFi"
+
                 )
+
         );
 
         inventoryService.addRoom(
+
                 new Room(
+
                         RoomType.DOUBLE,
-                        15,
+
+                        1,
+
                         3000,
-                        "WiFi, AC, TV"
+
+                        "WiFi, TV"
+
                 )
+
         );
 
-        inventoryService.addRoom(
-                new Room(
-                        RoomType.SUITE,
-                        0,
-                        7000,
-                        "WiFi, AC, TV, Jacuzzi"
+        bookingService.requestBooking(
+
+                new Reservation(
+
+                        "Krrish",
+
+                        RoomType.SINGLE,
+
+                        2
+
                 )
+
         );
+
+        bookingService.requestBooking(
+
+                new Reservation(
+
+                        "Rahul",
+
+                        RoomType.SINGLE,
+
+                        1
+
+                )
+
+        );
+
+        bookingService.requestBooking(
+
+                new Reservation(
+
+                        "Ajay",
+
+                        RoomType.DOUBLE,
+
+                        3
+
+                )
+
+        );
+
+        bookingService.displayWaitingQueue();
+
+        bookingService.processNextBooking();
+
+        bookingService.processNextBooking();
+
+        bookingService.processNextBooking();
 
         inventoryService.displayInventory();
-
-        searchService.displayAvailableRooms();
-
-        searchService.displayRoomDetails(RoomType.DOUBLE);
-
-        System.out.println();
-
-        System.out.println("Suite Available : "
-                + searchService.isRoomAvailable(RoomType.SUITE));
 
     }
 }

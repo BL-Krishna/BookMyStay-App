@@ -4,6 +4,8 @@ import bookmystay.model.Reservation;
 import bookmystay.model.Room;
 import bookmystay.repository.BookingRepository;
 import bookmystay.repository.InventoryRepository;
+import bookmystay.repository.RoomAllocationRepository;
+import bookmystay.util.RoomIdGenerator;
 
 public class BookingService {
 
@@ -11,11 +13,16 @@ public class BookingService {
 
     private final InventoryRepository inventoryRepository;
 
-    public BookingService(BookingRepository bookingRepository,
-                          InventoryRepository inventoryRepository) {
+    private final RoomAllocationRepository allocationRepository;
+
+    public BookingService(
+            BookingRepository bookingRepository,
+            InventoryRepository inventoryRepository,
+            RoomAllocationRepository allocationRepository) {
 
         this.bookingRepository = bookingRepository;
         this.inventoryRepository = inventoryRepository;
+        this.allocationRepository = allocationRepository;
     }
 
     public void requestBooking(Reservation reservation) {
@@ -58,11 +65,30 @@ public class BookingService {
             System.out.println("Booking Queue Empty.");
 
             return;
+
         }
 
         Room room =
                 inventoryRepository.findByRoomType(
                         reservation.getRoomType());
+
+        if (room.getAvailableRooms() <= 0) {
+
+            System.out.println("No rooms available.");
+
+            return;
+
+        }
+
+        String roomId =
+                RoomIdGenerator.generate(
+                        reservation.getRoomType());
+
+        allocationRepository.allocateRoom(
+                reservation.getRoomType(),
+                roomId);
+
+        reservation.setAllocatedRoomId(roomId);
 
         room.setAvailableRooms(
 
@@ -72,9 +98,25 @@ public class BookingService {
 
         System.out.println();
 
-        System.out.println("Booking Confirmed");
+        System.out.println();
 
-        System.out.println(reservation);
+        System.out.println("========================================");
+        System.out.println("BOOKING CONFIRMED");
+        System.out.println("========================================");
+
+        System.out.println("Customer : "
+                + reservation.getCustomerName());
+
+        System.out.println("Room Type : "
+                + reservation.getRoomType());
+
+        System.out.println("Room ID : "
+                + reservation.getAllocatedRoomId());
+
+        System.out.println("Nights : "
+                + reservation.getNights());
+
+        System.out.println("========================================");
 
     }
 
@@ -82,9 +124,18 @@ public class BookingService {
 
         System.out.println();
 
-        System.out.println("===== Booking Queue =====");
+        System.out.println("========================================");
+        System.out.println("CURRENT BOOKING QUEUE");
+        System.out.println("========================================");
 
         bookingRepository.displayQueue();
+
+        System.out.println("========================================");
+
+    }
+    public void displayAllocatedRooms() {
+
+        allocationRepository.displayAllocatedRooms();
 
     }
 }

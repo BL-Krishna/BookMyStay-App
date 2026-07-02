@@ -8,6 +8,8 @@ public class Reservation {
 
     private int nights;
 
+    private String allocatedRoomId;
+
     public Reservation(String customerName,
                        RoomType roomType,
                        int nights) {
@@ -29,6 +31,14 @@ public class Reservation {
         return nights;
     }
 
+    public String getAllocatedRoomId() {
+        return allocatedRoomId;
+    }
+
+    public void setAllocatedRoomId(String allocatedRoomId) {
+        this.allocatedRoomId = allocatedRoomId;
+    }
+
     @Override
     public String toString() {
 
@@ -36,6 +46,7 @@ public class Reservation {
                 "customerName='" + customerName + '\'' +
                 ", roomType=" + roomType +
                 ", nights=" + nights +
+                ", allocatedRoomId='" + allocatedRoomId + '\'' +
                 '}';
     }
 }

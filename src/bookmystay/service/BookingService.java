@@ -1,6 +1,7 @@
 package bookmystay.service;
 
 import bookmystay.model.Reservation;
+import bookmystay.model.ReservationStatus;
 import bookmystay.model.Room;
 import bookmystay.repository.BookingRepository;
 import bookmystay.repository.InventoryRepository;
@@ -15,16 +16,20 @@ public class BookingService {
 
     private final RoomAllocationRepository allocationRepository;
 
+    private final BookingHistoryService bookingHistoryService;
+
     public BookingService(
             BookingRepository bookingRepository,
             InventoryRepository inventoryRepository,
-            RoomAllocationRepository allocationRepository) {
+            RoomAllocationRepository allocationRepository,
+            BookingHistoryService bookingHistoryService) {
 
         this.bookingRepository = bookingRepository;
         this.inventoryRepository = inventoryRepository;
         this.allocationRepository = allocationRepository;
-    }
+        this.bookingHistoryService = bookingHistoryService;
 
+    }
     public void requestBooking(Reservation reservation) {
 
         Room room =
@@ -89,6 +94,12 @@ public class BookingService {
                 roomId);
 
         reservation.setAllocatedRoomId(roomId);
+
+        reservation.setStatus(
+                ReservationStatus.CONFIRMED);
+
+        bookingHistoryService.saveReservation(
+                reservation);
 
         room.setAvailableRooms(
 

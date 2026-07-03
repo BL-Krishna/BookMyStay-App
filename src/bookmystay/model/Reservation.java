@@ -10,10 +10,13 @@ public class Reservation {
 
     private String allocatedRoomId;
 
-    public Reservation(String customerName,
+    private String reservationId;
+    public Reservation(String reservationId,
+                       String customerName,
                        RoomType roomType,
                        int nights) {
 
+        this.reservationId = reservationId;
         this.customerName = customerName;
         this.roomType = roomType;
         this.nights = nights;
@@ -35,6 +38,10 @@ public class Reservation {
         return allocatedRoomId;
     }
 
+    public String getReservationId() {
+        return reservationId;
+    }
+
     public void setAllocatedRoomId(String allocatedRoomId) {
         this.allocatedRoomId = allocatedRoomId;
     }
@@ -44,6 +51,7 @@ public class Reservation {
 
         return "Reservation{" +
                 "customerName='" + customerName + '\'' +
+                ", reservationId='" + reservationId + '\'' +
                 ", roomType=" + roomType +
                 ", nights=" + nights +
                 ", allocatedRoomId='" + allocatedRoomId + '\'' +

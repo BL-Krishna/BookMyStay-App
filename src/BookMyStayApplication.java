@@ -1,14 +1,8 @@
 import bookmystay.model.Reservation;
 import bookmystay.model.Room;
 import bookmystay.model.RoomType;
-import bookmystay.repository.BookingRepository;
-import bookmystay.repository.InventoryRepository;
-import bookmystay.repository.RoomAllocationRepository;
-import bookmystay.repository.ServiceRepository;
-import bookmystay.service.BookingService;
-import bookmystay.service.InventoryService;
-import bookmystay.service.SearchService;
-import bookmystay.service.ServiceManagementService;
+import bookmystay.repository.*;
+import bookmystay.service.*;
 
 public class BookMyStayApplication {
 
@@ -29,12 +23,21 @@ public class BookMyStayApplication {
         SearchService searchService =
                 new SearchService(inventoryRepository);
 
+        BookingHistoryRepository historyRepository =
+                new BookingHistoryRepository();
+
+        BookingHistoryService bookingHistoryService =
+                new BookingHistoryService(
+                        historyRepository);
+
         BookingService bookingService =
                 new BookingService(
                         bookingRepository,
                         inventoryRepository,
-                        allocationRepository
+                        allocationRepository,
+                        bookingHistoryService
                 );
+
         ServiceRepository serviceRepository =
                 new ServiceRepository();
         ServiceManagementService serviceManagementService =
@@ -146,6 +149,18 @@ public class BookMyStayApplication {
 
         searchService.displayAvailableRooms();
 
+        bookingHistoryService.displayBookingHistory();
+
+        bookingHistoryService.searchReservation(
+                "RES001");
+
+        bookingHistoryService.searchCustomer(
+                "Krrish");
+
+        bookingHistoryService.cancelReservation(
+                "RES002");
+
+        bookingHistoryService.displayBookingHistory();
     }
 
 }

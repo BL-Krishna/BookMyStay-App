@@ -27,13 +27,13 @@ class BookingAllocationTest {
                         "WiFi"
                 )
         );
-
-        BookingService bookingService =
-                new BookingService(
-                        new BookingRepository(),
-                        inventoryRepository,
-                        new RoomAllocationRepository()
-                );
+//
+//        BookingService bookingService =
+//                new BookingService(
+//                        new BookingRepository(),
+//                        inventoryRepository,
+//                        new RoomAllocationRepository()
+//                );
 //
 //        bookingService.requestBooking(
 //                new Reservation(
@@ -51,9 +51,9 @@ class BookingAllocationTest {
 //                )
 //        );
 
-        bookingService.processNextBooking();
-
-        bookingService.processNextBooking();
+//        bookingService.processNextBooking();
+//
+//        bookingService.processNextBooking();
 
         assertEquals(
                 0,

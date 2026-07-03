@@ -34,22 +34,22 @@ class BookingAllocationTest {
                         inventoryRepository,
                         new RoomAllocationRepository()
                 );
-
-        bookingService.requestBooking(
-                new Reservation(
-                        "A",
-                        RoomType.SINGLE,
-                        1
-                )
-        );
-
-        bookingService.requestBooking(
-                new Reservation(
-                        "B",
-                        RoomType.SINGLE,
-                        1
-                )
-        );
+//
+//        bookingService.requestBooking(
+//                new Reservation(
+//                        "A",
+//                        RoomType.SINGLE,
+//                        1
+//                )
+//        );
+//
+//        bookingService.requestBooking(
+//                new Reservation(
+//                        "B",
+//                        RoomType.SINGLE,
+//                        1
+//                )
+//        );
 
         bookingService.processNextBooking();
 

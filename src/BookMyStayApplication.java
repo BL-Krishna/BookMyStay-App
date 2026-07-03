@@ -4,9 +4,11 @@ import bookmystay.model.RoomType;
 import bookmystay.repository.BookingRepository;
 import bookmystay.repository.InventoryRepository;
 import bookmystay.repository.RoomAllocationRepository;
+import bookmystay.repository.ServiceRepository;
 import bookmystay.service.BookingService;
 import bookmystay.service.InventoryService;
 import bookmystay.service.SearchService;
+import bookmystay.service.ServiceManagementService;
 
 public class BookMyStayApplication {
 
@@ -33,6 +35,37 @@ public class BookMyStayApplication {
                         inventoryRepository,
                         allocationRepository
                 );
+        ServiceRepository serviceRepository =
+                new ServiceRepository();
+        ServiceManagementService serviceManagementService =
+                new ServiceManagementService(
+                        serviceRepository);
+        Reservation reservation =
+                new Reservation(
+
+                        "RES001",
+
+                        "Krrish",
+
+                        RoomType.SINGLE,
+
+                        2
+
+                );
+
+        bookingService.requestBooking(
+                reservation);
+        serviceManagementService.addBreakfast(
+                "RES001");
+
+        serviceManagementService.addSpa(
+                "RES001");
+
+        serviceManagementService.addAirportPickup(
+                "RES001");
+
+        serviceManagementService.displayServices(
+                "RES001");
 
         inventoryService.addRoom(
                 new Room(
@@ -63,6 +96,7 @@ public class BookMyStayApplication {
 
         bookingService.requestBooking(
                 new Reservation(
+                        "RES001",
                         "Krrish",
                         RoomType.SINGLE,
                         2
@@ -71,6 +105,7 @@ public class BookMyStayApplication {
 
         bookingService.requestBooking(
                 new Reservation(
+                        "RES002",
                         "Rahul",
                         RoomType.SINGLE,
                         1
@@ -79,6 +114,7 @@ public class BookMyStayApplication {
 
         bookingService.requestBooking(
                 new Reservation(
+                        "RES003",
                         "Ajay",
                         RoomType.DOUBLE,
                         3
@@ -87,6 +123,7 @@ public class BookMyStayApplication {
 
         bookingService.requestBooking(
                 new Reservation(
+                        "RES004",
                         "Priya",
                         RoomType.SUITE,
                         2
